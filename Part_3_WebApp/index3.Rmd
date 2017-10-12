@@ -1,0 +1,84 @@
+---
+title: "A Shiny App using diamonds"
+author: "Jing Qian"
+date: "10/11/2017"
+output: html_document
+runtime: shiny
+---
+
+
+```{r echo=FALSE}
+library(shiny)
+library(ggplot2)
+library(RColorBrewer)
+
+ui <- fluidPage(
+  fluidRow(
+    column(2,
+      radioButtons("colorscale", "colorscale:",
+               c("Spectral" = "Spectral",
+                 "Set1" = "Set1",
+                 "BuPu" = "BuPu")),        
+         radioButtons("xaxis", "X-axis:",
+               c("color" = "color",
+                 "clarity" = "clarity",
+                 "cut" = "cut")),
+         radioButtons("yaxis", "Y-axis:",
+               c("depth" = "depth",
+                 "price" = "price",
+                 "table" = "table")),      
+         radioButtons("color", "Color-axis:",
+                 c("color" = "color",
+                   "cut" = "cut",
+                 "clarity" = "clarity"))
+    ),
+    column(10,
+      plotOutput("distPlot")
+    )
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+   output$distPlot <- renderPlot({
+      diamonds <- diamonds
+      xaxis<-input$xaxis
+      yaxis<-input$yaxis
+      zaxis<-input$color
+      cbrewer<-input$colorscale
+     p<-ggplot(diamonds, aes_string(x=xaxis, y=yaxis)) + geom_violin(aes_string(fill=zaxis))
+     p+scale_fill_brewer(palette = cbrewer)
+   })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+```
+
+
+
+
+
+<!-- The text below is just to reformat the page, using css styling -->
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+h1 {
+    background-color: #990000;
+    color:#FFF;
+    text-align:center;
+}
+h2 {
+   background-color:#f3d6d6;
+   text-align:center;
+   color:#333
+}
+h3 {
+   margin-left:-5px;
+   color:#333
+}
+
+</style>
+")
+```
