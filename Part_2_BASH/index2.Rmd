@@ -59,7 +59,6 @@ cat numbers.txt
 ```{bash}
 wc -c numbers.txt  
 wc -l numbers.txt  
-wc -w numbers.txt  
 ```
 
 ## Question 8: Please create a sed command (e.g. sed 's/match/replace/g' numbers.txt) to commify the list of numbers in thousands place to the screen.  For example: 1,234 or 12,121
